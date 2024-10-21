@@ -1,3 +1,24 @@
+# Keccak256 bench
+- this repo is a fork of the worldcoin Semaphore Merkle Tree Batcher (SMTB)
+- the purpose is to show the order of magnitute difference in proving time between poseidon and keccak256 in a Groth16 circuit
+- the setup is groth16 bn254, poseidon and keccak256 with 2 inputs each
+- note that the output is raw since the test completion time is logged not the actual proving time.
+- Results: Poseidon `0.076s` Keccak `1.01s` for one hash with two inputs `(0,0)`
+
+- to reproduce keccak(0,0) run:
+```
+go test -timeout 30s -run ^TestKeccak$ worldcoin/gnark-mbu/prover/keccak
+```
+- expected output `--- FAIL: TestKeccak/bn254/groth16 (1.01s)`
+
+- to reproduce poseidon(0,0) run:
+```
+go test -timeout 30s -run ^TestPoseidon$ worldcoin/gnark-mbu/prover/poseidon
+```
+- expected output `ok  	worldcoin/gnark-mbu/prover/poseidon 0.076s`
+
+
+
 # 📦 Semaphore Merkle Tree Batcher (SMTB)
 
 SMTB is a service for batch processing of Merkle tree updates. It is designed to be used in conjunction with [Semaphore](https://github.com/semaphore-protocol/semaphore). It accepts Merkle tree updates and batches them together into a single one. This is useful for reducing the number of transactions that need to be submitted to the blockchain. The correctness of the batched Merkle tree update is assured through the generation of a SNARK (generated through [gnark](https://github.com/ConsenSys/gnark)).
